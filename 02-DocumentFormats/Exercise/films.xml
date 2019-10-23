@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<films>
+		<film>
+			<title>Paprika</title>
+			<genre>Psychological</genre>
+			<year>2006</year>
+			<personal_rating>10/10</personal_rating>
+			<director>Satoshi Kon</director>
+			<actors>Megumi Hayashibara, Akio Ootsuka</actors>
+		</film>
+		<film>
+			<title>Avengers: Endgame</title>
+			<genre>Action</genre>
+			<year>2019</year>
+			<personal_rating>9/10</personal_rating>
+			<director>Anthony RussoJoe Russo</director>
+			<actors>Robert Downey Jr., Chris Evans</actors>
+		</film>
+		<film>
+			<title>Creed</title>
+			<genre>Drama</genre>
+			<year>2015</year>
+			<personal_rating>10/10</personal_rating>
+			<director>Ryan Coogler</director>
+			<actors>Michael B. Jordan, Sylvester Stallone</actors>
+		</film>
+		<film>
+			<title>Wolf Children</title>
+			<genre>Drama, Fantasy</genre>
+			<year>2012</year>
+			<personal_rating>10/10</personal_rating>
+			<director>Mamoru Hosoda</director>
+			<actors>Aoi Miyazaki, Takao Ohsawa</actors>
+		</film>
+		<film>
+			<title>Isle of Dogs</title>
+			<genre>Animation, Comedy</genre>
+			<year>2018</year>
+			<personal_rating>9/10</personal_rating>
+			<director>Wes Anderson</director>
+			<actors>Bryan Cranston, Koyu Rankin</actors>
+		</film>
+</films>
