@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Aplikacja giełdowa</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Lato|Libre+Caslon+Text&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    </head>
+    <body>
+        <div id="mainContainer">    
+        <div class="container" style="position: relative">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div id="sortingButtons">
+            <hr>
+            <button onclick="b('A')" class="letters">A</button>
+            <button onclick="b('B')" class="letters">B</button>
+            <button onclick="b('C')" class="letters">C</button>
+            <button onclick="b('D')" class="letters">D</button>
+            <button onclick="b('E')" class="letters">E</button>
+            <button onclick="b('F')" class="letters">F</button>
+            <button onclick="b('G')" class="letters">G</button>
+            <button onclick="b('H')" class="letters">H</button>
+            <button onclick="b('I')" class="letters">I</button>
+            <button onclick="b('J')" class="letters">J</button>
+            <button onclick="b('K')" class="letters">K</button>
+            <button onclick="b('L')" class="letters">L</button>
+            <button onclick="b('M')" class="letters">M</button>
+            <button onclick="b('N')" class="letters">N</button>
+            <button onclick="b('O')" class="letters">O</button>
+            <button onclick="b('P')" class="letters">P</button>
+            <button onclick="b('Q')" class="letters">Q</button>
+            <button onclick="b('R')" class="letters">R</button>
+            <button onclick="b('S')" class="letters">S</button>
+            <button onclick="b('T')" class="letters">T</button>
+            <button onclick="b('U')" class="letters">U</button>
+            <button onclick="b('V')" class="letters">V</button>
+            <button onclick="b('W')" class="letters">W</button>
+            <button onclick="b('X')" class="letters">X</button>
+            <button onclick="b('Y')" class="letters">Y</button>
+            <button onclick="b('Z')" class="letters">Z</button>
+            </br>
+            <input type="text" name="firstname" id="searchingInput">
+            <button onclick="search()" id="searchingButton">szukaj</button>
+            <hr>
+        </div>
+    
+        <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th class="table-header" scope="col" style="text-align: left;">Nazwa</th>
+                <th class="table-header" scope="col">Ticker</th>
+                <th class="table-header" scope="col">Wolumen</th>
+                <th class="table-header" scope="col">Zmiana</th>
+                <th class="table-header" scope="col">Cena</th>
+
+            </tr>
+        </thead>
+        <tbody class="table-rows">
+        </tbody>
+        </table>
+
+
+
+
+
+
+
+
+    <script>
+        function b(letterval){
+            while(document.querySelectorAll("[type=row]").length>0){
+                document.querySelector("[type=row]").remove();
+    
+            }
+
+            i=0
+            console.log(letterval)
+            console.log(document.querySelectorAll("#row").length)
+            var letter="^"+letterval
+            regexp = new RegExp(letter,"i")
+
+            display2()
+
+        }
+
+        function search(){
+            while(document.querySelectorAll("[type=row]").length>0){
+                document.querySelector("[type=row]").remove();
+    
+            }
+
+            i=0
+            var letter=document.querySelector("input").value
+            regexp = new RegExp(letter, "i")
+            display2()
+
+        }
+
+        Chartjs()
+        display2()
+
+        var regexp;
+        var i =0;
+
+function display2()
+{
+
+
+var request=new XMLHttpRequest();
+request.onreadystatechange = function()
+{
+    if (this.readyState == 4 && this.status == 200)
+    {  
+        Response=JSON.parse(this.responseText)
+        
+        display()
+
+    }
+
+    
+}
+request.open("GET","https://api.twelvedata.com/stocks" );
+request.send();
+
+}
+
+    
+function Chartjs()
+{
+    var myChart = document.getElementById('myChart').getContext('2d');
+        var stockChart = new Chart(myChart, {
+            type: 'line',
+            data: {
+                labels: ["Agilent Technologies Inc", "Applied Optoelectronics Inc", "ABB Ltd","American Airlines Group Inc","AllianceBernstein Holding LP",],
+                datasets: [{
+                    label: 'Value',
+                    data: [90.17000,14.12000,23.92000,28.40000,33.10000],
+                }],
+            options: {}
+            
+            }
+
+        });
+}
+
+function display()
+{
+    var Cena=0;
+
+
+    
+
+
+
+    Response.data.forEach(element => {
+
+        if (i<20)
+        {
+
+        if(element.symbol.match(regexp)||element.name.match(regexp))
+        {
+
+var request=new XMLHttpRequest();
+request.onreadystatechange = function()
+{
+    if (this.readyState == 4 && this.status == 200)
+    {  
+        Response2=JSON.parse(this.responseText)       
+        const nazwa=Response.data["0"]["name"]
+       
+        console.log(nazwa)
+
+        Cena=Response2.values["0"]["close"]
+        difference=((Response2.values["0"]["close"]-Response2.values["1"]["close"])/Response2.values["0"]["close"])*100
+        difference=Math.round(difference*100)/100;
+        volume=Response2.values["0"]["volume"]
+        let output = `
+            <td>${element["name"]}</td>
+            <td>${element["symbol"]}</td>
+            <td>${volume}</td>
+            <td id=diff>${difference}%</td>
+            <td>${Cena}</td>
+
+        `
+        let row = document.createElement("tr") 
+        row.setAttribute("id", i)
+        row.setAttribute("clicked", false)
+        //row.setAttribute("onClick", "click(this)")
+        row.addEventListener('click', click, true)
+        row.setAttribute("type","row") 
+        
+        
+        row.innerHTML = output
+        document.querySelector("tbody").appendChild(row)
+        
+
+        if (difference<0 )row.querySelector("#diff").setAttribute("style","color:red")
+        if (difference>0 )row.querySelector("#diff").setAttribute("style","color:green")
+
+    }
+
+    i++
+}
+
+request.open("GET","https://api.twelvedata.com/time_series?symbol="+element.symbol+"&interval=1day&apikey=a3e9aa227fd0474494e62f3148d0d7e0&outputsize=2" );
+request.send();
+
+
+
+}
+
+
+}
+
+    });
+
+
+}
+
+
+
+
+    function click(el){
+        el.target.setAttribute("clicked",true)
+
+        let output = `
+
+            <td>Test</td>
+            <td>Test</td>
+            <td>Test/td>
+            <td>Test</td>
+            <td>Test</td>
+
+        `
+
+        let details = document.createElement("tr") 
+        details.innerHTML = output
+        document.querySelector('[clicked=true]').appendChild(details)
+    }
+
+
+
+</script>
+</div>
+</body>
+</html>
